@@ -14,3 +14,7 @@ console.log(1 == true); // true
 console.log(1 === true); // false
 console.log(1 != true); // false
 console.log(1 !== true); // true
+
+
+// === is strict equality operator
+// == is loose equality operator 
