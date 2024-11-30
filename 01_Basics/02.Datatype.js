@@ -29,6 +29,3 @@ console.table([typeof nullValue, typeof undefinedValue, typeof symbolValue]);
 
 // null is an object 
 // undefined is undefined
-
-
-
