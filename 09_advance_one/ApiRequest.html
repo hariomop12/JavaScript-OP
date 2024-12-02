@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub User Search</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #1e1e2f;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .searchBtn {
+        padding: 10px 20px;
+        background-color: #ff6f61;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .search-container {
+        margin-top: 50px;
+        display: flex;
+        gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-bottom: 20px;
+      }
+
+      .card {
+        background-color: #303030;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .bio {
+        font-style: italic;
+        color: #d3d3d3;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #ff6f61;
+      }
+
+        .card p {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+      .card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Your Github info 🔥</h1>
+
+    <div class="search-container">
+      <input type="text" id="username" placeholder="Enter GitHub username" />
+      <button class="searchBtn" id="searchBtn">Search</button>
+    </div>
+
+    <div class="card" id="user-card">
+      <img id="avatar" src="" alt="User Avatar" />
+      <h2 id="name"></h2>
+      <p>Followers: <span id="followers"></span></p>
+      <p>Following: <span id="following"></span></p>
+      <p class="bio" id="bio"></p>
+      <p>Public Repos: <span id="public_repos"></span></p>
+    </div>
+
+    <script>
+      const searchBtn = document.getElementById("searchBtn");
+      const usernameInput = document.getElementById("username");
+      const card = document.getElementById("user-card");
+      const avatar = document.getElementById("avatar");
+      const name = document.getElementById("name");
+      const followers = document.getElementById("followers");
+      const bio = document.getElementById("bio");
+      const following = document.getElementById("following");
+        const public_repos = document.getElementById("public_repos");
+      
+
+      searchBtn.addEventListener("click", () => {
+        const username = usernameInput.value.trim();
+
+        if (username === "") {
+          alert("Please enter a username.");
+          return;
+        }
+
+        const requestUrl = `https://api.github.com/users/${username}`;
+
+        fetch(requestUrl)
+          .then((response) => {
+            if (!response.ok) {
+              // Check for non-2xx status codes
+              if (response.status === 404) {
+                throw new Error("User not found."); // Throw specific error for 404
+              } else {
+                throw new Error("Network response was not ok."); // Generic error for other issues
+              }
+            }
+            return response.json();
+          })
+          .then((data) => {
+            avatar.src = data.avatar_url;
+            name.textContent = data.name || data.login;
+            followers.textContent = data.followers;
+            bio.textContent = data.bio || "No bio available.";
+            card.style.display = "block";
+            following.textContent = data.following;
+            public_repos.textContent = data.public_repos;
+          
+          })
+          .catch((error) => {
+            console.error("Error fetching ", error);
+            alert(error.message); // Display error message to the user
+            card.style.display = "none"; // Hide the card if there's an error
+          });
+      });
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub User Search</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #1e1e2f;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #ff6f61;
+      }
+
+      .search-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .search-container input {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        width: 250px;
+        font-size: 1rem;
+      }
+
+      .search-container button {
+        padding: 10px 20px;
+        background-color: #ff6f61;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .search-container button:hover {
+        background-color: #e55a4e;
+      }
+
+      .card {
+        background-color: #2b2b3d;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        display: none;
+        width: 100%;
+        max-width: 400px;
+        text-align: left;
+      }
+
+      .card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        float: left;
+        margin-right: 15px;
+      }
+
+      .card h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #ff6f61;
+      }
+
+      .card p {
+        margin: 5px 0;
+        line-height: 1.5;
+      }
+
+      .card .bio {
+        font-style: italic;
+        color: #d3d3d3;
+      }
+
+      .card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #ff6f61;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      .card a:hover {
+        background-color: #e55a4e;
+      }
+
+      .card::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>GitHub User Search 🔍</h1>
+
+    <div class="search-container">
+      <input type="text" id="username" placeholder="Enter GitHub username" />
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div class="card" id="user-card">
+      <img id="avatar" src="" alt="User Avatar" />
+      <h2 id="name"></h2>
+      <p>Username: <span id="login"></span></p>
+      <p>Location: <span id="location"></span></p>
+      <p>Bio: <span class="bio" id="bio"></span></p>
+      <p>Public Repos: <span id="public_repos"></span></p>
+      <p>Followers: <span id="followers"></span></p>
+      <p>Following: <span id="following"></span></p>
+      <p>Created At: <span id="created_at"></span></p>
+      <p>Updated At: <span id="updated_at"></span></p>
+      <a id="profile_link" href="" target="_blank">View Profile</a>
+    </div>
+
+    <script>
+      const searchBtn = document.getElementById("searchBtn");
+      const usernameInput = document.getElementById("username");
+      const card = document.getElementById("user-card");
+      const avatar = document.getElementById("avatar");
+      const name = document.getElementById("name");
+      const login = document.getElementById("login");
+      const location = document.getElementById("location");
+      const bio = document.getElementById("bio");
+      const public_repos = document.getElementById("public_repos");
+      const followers = document.getElementById("followers");
+      const following = document.getElementById("following");
+      const created_at = document.getElementById("created_at");
+      const updated_at = document.getElementById("updated_at");
+      const profile_link = document.getElementById("profile_link");
+
+      searchBtn.addEventListener("click", () => {
+        const username = usernameInput.value.trim();
+
+        if (username === "") {
+          alert("Please enter a username.");
+          return;
+        }
+
+        const requestUrl = `https://api.github.com/users/${username}`;
+
+        fetch(requestUrl)
+          .then((response) => {
+            if (!response.ok) {
+              if (response.status === 404) {
+                throw new Error("User not found.");
+              } else {
+                throw new Error("Network response was not ok.");
+              }
+            }
+            return response.json();
+          })
+          .then((data) => {
+            avatar.src = data.avatar_url;
+            name.textContent = data.name || data.login;
+            login.textContent = data.login;
+            location.textContent = data.location || "Not specified";
+            bio.textContent = data.bio || "No bio available.";
+            public_repos.textContent = data.public_repos;
+            followers.textContent = data.followers;
+            following.textContent = data.following;
+            created_at.textContent = new Date(
+              data.created_at
+            ).toLocaleDateString();
+            updated_at.textContent = new Date(
+              data.updated_at
+            ).toLocaleDateString();
+            profile_link.href = data.html_url;
+
+            card.style.display = "block";
+          })
+          .catch((error) => {
+            console.error("Error fetching:", error);
+            alert(error.message);
+            card.style.display = "none";
+          });
+      });
+    </script>
+  </body>
+</html> -->
