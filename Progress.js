@@ -1,7 +1,3 @@
-// done 
-// done
-// done 
-// done 
 // done
 // done
 // done
@@ -21,9 +17,13 @@
 // done
 // done
 // done
-// done 
-// done 
-// done 
+// done
+// done
+// done
+// done
+// done
+// done
+// done
 // done
 // done
 // done
@@ -36,10 +36,9 @@ Project DOM
 // Event
 Async
 2 Async Project 
+// done 
 // done
 // done
-Fetch
-OOPS
 Magic prototype
 Call and This
 Class Constructor and Static
