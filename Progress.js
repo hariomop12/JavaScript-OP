@@ -35,16 +35,17 @@ DOM
 Project DOM
 Event
 Async
-2 Async Project 
+2 Async Project
 // done 
+// done
 // done
 // done
 Magic prototype
 Call and This
 Class Constructor and Static
-Bind
-Object 
+Bind 
+// Object 
 Getters and Setters
 Lexical scoping and Closure
-Done
+// Done
 Array
